@@ -25,11 +25,33 @@ const eventSchema = new mongoose.Schema(
         location: {
             type: String,
             required: true
+        
+        },
+        streetAddress: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true     
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        zipCode: {
+            type: String,
+            required: true
         },
         organizer: {
             type: String,
             required: true
         },
+        cost: {
+            type: String,
+            required: true
+        },-
+    
         image: {
             type: String
         },
