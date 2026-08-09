@@ -3,18 +3,20 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import eventRoutes from "./routes/eventRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 
 connectDB();
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/v1/events", eventRoutes);
 
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/events", eventRoutes);
 app.get("/", (req, res) => {
   res.json({
     message: "Community Connect API is running!"

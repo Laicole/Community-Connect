@@ -36,8 +36,6 @@ export const getEventById = async (req, res) => {
 
     return res.status(200).json(event);
   } catch (error) {
-    return res.status(500).json({ message: error.message 
-
-    });
+    return res.status(500).json({ message: error.message });
   }
 };
