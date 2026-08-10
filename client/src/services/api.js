@@ -38,13 +38,27 @@ export const loginUser = async (credentials) => {
   return data;
 };
 
-  export const getEvents = async () => {
-    const response = await fetch("http://localhost:5000/api/v1/events");
+// GET ALL EVENTS
+export const getEvents = async () => {
+  const response = await fetch(`${API_URL}/events`);
 
   const data = await response.json();
 
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch events");
+  }
+
+  return data;
+};
+
+// GET ONE EVENT
+export const getEventById = async (id) => {
+  const response = await fetch(`${API_URL}/events/${id}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch event");
   }
 
   return data;
