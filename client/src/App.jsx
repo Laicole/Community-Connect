@@ -13,34 +13,16 @@ function App() {
     <BrowserRouter>
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
-
-        <Route
-          path="/events/:id"
-          element={<EventDetails />}
-        />
-
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
-
-        <Route
-          path="/favorites"
-          element={<Favorites />}
-        />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/events/:id" element={<EventDetails />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/favorites" element={<Favorites />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 }
