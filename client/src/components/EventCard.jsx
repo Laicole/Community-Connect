@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import FavoriteButton from "./FavoriteButton";
 
 function EventCard({ event }) {
   return (
@@ -33,7 +34,7 @@ function EventCard({ event }) {
       <Link to={`/events/${event._id}`}>
         View Details
       </Link>
-
+      <FavoriteButton eventId={event._id} /> 
       <hr />
     </div>
   );
