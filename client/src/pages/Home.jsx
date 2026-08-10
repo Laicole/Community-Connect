@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../services/api";
+import EventCard from "../components/EventCard";
 
 function Home() {
   const [events, setEvents] = useState([]);
@@ -9,9 +10,13 @@ function Home() {
     const loadEvents = async () => {
       try {
         const data = await getEvents();
+
+        console.log("EVENTS:", data);
+
         setEvents(data);
         setMessage("");
       } catch (error) {
+        console.error("EVENT ERROR:", error);
         setMessage(error.message);
       }
     };
@@ -27,12 +32,10 @@ function Home() {
       {message && <p>{message}</p>}
 
       {events.map((event) => (
-        <div key={event._id}>
-          <h3>{event.title}</h3>
-          <p>{event.description}</p>
-          <p>Category: {event.category}</p>
-          <p>Age Group: {event.ageGroup}</p>
-        </div>
+        <EventCard
+          key={event._id}
+          event={event}
+        />
       ))}
     </div>
   );
