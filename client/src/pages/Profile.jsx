@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 
 function Profile() {
   const [user, setUser] = useState(null);
+  const [name, setName] = useState("");
+  const [ageGroup, setAgeGroup] = useState("");
+  const [interests, setInterests] = useState("");
   const [message, setMessage] = useState("Loading profile...");
 
   useEffect(() => {
@@ -25,6 +28,9 @@ function Profile() {
         }
 
         setUser(data);
+        setName(data.name || "");
+        setAgeGroup(data.ageGroup || "");
+        setInterests((data.interests || []).join(", "));
         setMessage("");
       } catch (error) {
         setMessage(error.message);
@@ -34,37 +40,87 @@ function Profile() {
     loadProfile();
   }, []);
 
-  if (message) {
-    return <p>{message}</p>;
-  }
+  const handleUpdate = async (e) => {
+    e.preventDefault();
 
-  if (!user) {
-    return null;
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        "http://localhost:5000/api/v1/users/profile",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name,
+            ageGroup,
+            interests: interests
+              .split(",")
+              .map((interest) => interest.trim())
+              .filter(Boolean)
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update profile");
+      }
+
+      setUser(data);
+      setMessage("Profile updated successfully!");
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
+  if (!user && message === "Loading profile...") {
+    return <p>{message}</p>;
   }
 
   return (
     <div>
       <h1>My Profile</h1>
 
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
+      <form onSubmit={handleUpdate}>
+        <label>Name</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
+        <label>Age Group</label>
+        <select
+          value={ageGroup}
+          onChange={(e) => setAgeGroup(e.target.value)}
+        >
+          <option value="">Select Age Group</option>
+          <option value="Children">Children</option>
+          <option value="Teen">Teen</option>
+          <option value="Adult">Adult</option>
+          <option value="Senior">Senior</option>
+          <option value="21+">21+</option>
+        </select>
 
-      <p>
-        <strong>Age Group:</strong> {user.ageGroup}
-      </p>
+        <label>Interests</label>
+        <input
+          type="text"
+          value={interests}
+          onChange={(e) => setInterests(e.target.value)}
+          placeholder="Music, Arts, Technology"
+        />
 
-      <h3>Interests</h3>
+        <button type="submit">
+          Update Profile
+        </button>
+      </form>
 
-      <ul>
-        {user.interests?.map((interest) => (
-          <li key={interest}>{interest}</li>
-        ))}
-      </ul>
+      {message && <p>{message}</p>}
     </div>
   );
 }
