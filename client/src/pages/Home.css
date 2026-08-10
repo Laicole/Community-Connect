@@ -1,0 +1,135 @@
+.home-page {
+max-width: 1200px;
+margin:0 auto;
+padding: 40px 32px 80px;    
+}
+.hero {
+  background: #fbf7f0;
+  border-radius: 28px;
+  padding: 64px;
+  margin-bottom: 56px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #d95c1a;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.hero h1,
+.section-heading h2 {
+  font-family: "Playfair Display", serif;
+  color: #342a24;
+}
+
+.hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  line-height: 1.02;
+}
+
+.hero-copy p {
+  max-width: 620px;
+  margin-top: 20px;
+  color: #766b63;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.search-panel {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 2fr 1.3fr 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.search-panel input,
+.search-panel select {
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid #e8ded3;
+  border-radius: 12px;
+  background: #fffdf9;
+  color: #342a24;
+  font-family: "DM Sans", sans-serif;
+}
+
+.events-section {
+  margin-top: 24px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #766b63;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1023px) {
+  .home-page {
+    padding: 32px 24px 72px;
+  }
+
+  .hero {
+    padding: 44px;
+  }
+
+  .search-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-page {
+    padding: 20px 16px 100px;
+  }
+
+  .hero {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .search-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+}

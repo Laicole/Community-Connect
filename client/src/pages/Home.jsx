@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../services/api";
 import EventCard from "../components/EventCard";
+import "./Home.css";
 
 function Home() {
   const [events, setEvents] = useState([]);
@@ -39,7 +40,7 @@ function Home() {
     const eventLocation =
       typeof event.location === "string"
         ? event.location
-        : `${event.location?.venue || ""} ${event.location?.street || ""} ${event.location?.city || ""} ${event.location?.state || ""}`;
+        : `${event.location?.venue || ""} ${event.location?.city || ""} ${event.location?.state || ""}`;
 
     const matchesLocation =
       !location ||
@@ -62,68 +63,91 @@ function Home() {
   });
 
   return (
-    <div>
-      <h1>Community Connect</h1>
-      <h2>Find Community Events</h2>
+    <div className="home-page">
+      <section className="hero">
+        <div className="hero-copy">
+          <span className="eyebrow">LOCAL EXPERIENCES</span>
 
-      <input
-        type="text"
-        placeholder="Search events..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+          <h1>Find something worth showing up for.</h1>
 
-      <select
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="">All Categories</option>
-        <option value="Music">Music</option>
-        <option value="Sports">Sports</option>
-        <option value="Health & Wellness">Health & Wellness</option>
-        <option value="Children & Family">Children & Family</option>
-        <option value="Business & Networking">Business & Networking</option>
-        <option value="Arts & Culture">Arts & Culture</option>
-        <option value="Pets & Adoption">Pets & Adoption</option>
-      </select>
+          <p>
+            Discover community events that match your interests,
+            age group, and location.
+          </p>
+        </div>
 
-      <select
-        value={ageGroup}
-        onChange={(e) => setAgeGroup(e.target.value)}
-      >
-        <option value="">All Age Groups</option>
-        <option value="All Ages">All Ages</option>
-        <option value="Children">Children</option>
-        <option value="Adult">Adult</option>
-        <option value="21+">21+</option>
-        <option value="Not Specified">Not Specified</option>
-      </select>
+        <div className="search-panel">
+          <input
+            type="text"
+            placeholder="Search events..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-      <input
-        type="text"
-        placeholder="Location"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
 
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            <option value="Music">Music</option>
+            <option value="Sports">Sports</option>
+            <option value="Health & Wellness">Health & Wellness</option>
+            <option value="Children & Family">Children & Family</option>
+            <option value="Business & Networking">Business & Networking</option>
+            <option value="Arts & Culture">Arts & Culture</option>
+            <option value="Pets & Adoption">Pets & Adoption</option>
+          </select>
 
-      {message && <p>{message}</p>}
+          <select
+            value={ageGroup}
+            onChange={(e) => setAgeGroup(e.target.value)}
+          >
+            <option value="">All Age Groups</option>
+            <option value="All Ages">All Ages</option>
+            <option value="Children">Children</option>
+            <option value="Adult">Adult</option>
+            <option value="21+">21+</option>
+            <option value="Not Specified">Not Specified</option>
+          </select>
 
-      <p>
-        Showing {filteredEvents.length} of {events.length} events
-      </p>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+      </section>
 
-      {filteredEvents.map((event) => (
-        <EventCard
-          key={event._id}
-          event={event}
-        />
-      ))}
+      <section className="events-section">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">EXPLORE</span>
+            <h2>Community Events</h2>
+          </div>
+
+          <p>
+            Showing {filteredEvents.length} of {events.length} events
+          </p>
+        </div>
+
+        {message && <p>{message}</p>}
+
+        <div className="events-grid">
+          {filteredEvents.map((event) => (
+            <EventCard
+              key={event._id}
+              event={event}
+            />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
