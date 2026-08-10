@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // REGISTER USER
 export const registerUser = async (req, res) => {
@@ -30,6 +31,12 @@ export const registerUser = async (req, res) => {
       interests
     });
 
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
     return res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -37,7 +44,8 @@ export const registerUser = async (req, res) => {
       ageGroup: user.ageGroup,
       interests: user.interests,
       favorites: user.favorites,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      token
     });
   } catch (error) {
     return res.status(400).json({
@@ -76,17 +84,29 @@ export const loginUser = async (req, res) => {
       });
     }
 
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
     return res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       ageGroup: user.ageGroup,
       interests: user.interests,
-      favorites: user.favorites
+      favorites: user.favorites,
+      token
     });
   } catch (error) {
     return res.status(500).json({
       message: error.message
     });
   }
+};
+
+// GET LOGGED-IN USER PROFILE
+export const getProfile = async (req, res) => {
+  return res.status(200).json(req.user);
 };
