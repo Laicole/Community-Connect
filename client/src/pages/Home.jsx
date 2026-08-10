@@ -4,19 +4,20 @@ import EventCard from "../components/EventCard";
 
 function Home() {
   const [events, setEvents] = useState([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [ageGroup, setAgeGroup] = useState("");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
   const [message, setMessage] = useState("Loading events...");
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
         const data = await getEvents();
-
-        console.log("EVENTS:", data);
-
         setEvents(data);
         setMessage("");
       } catch (error) {
-        console.error("EVENT ERROR:", error);
         setMessage(error.message);
       }
     };
@@ -24,14 +25,100 @@ function Home() {
     loadEvents();
   }, []);
 
+  const filteredEvents = events.filter((event) => {
+    const matchesSearch =
+      event.title.toLowerCase().includes(search.toLowerCase()) ||
+      event.description.toLowerCase().includes(search.toLowerCase());
+
+    const matchesCategory =
+      !category || event.category === category;
+
+    const matchesAgeGroup =
+      !ageGroup || event.ageGroup === ageGroup;
+
+    const eventLocation =
+      typeof event.location === "string"
+        ? event.location
+        : `${event.location?.venue || ""} ${event.location?.street || ""} ${event.location?.city || ""} ${event.location?.state || ""}`;
+
+    const matchesLocation =
+      !location ||
+      eventLocation.toLowerCase().includes(location.toLowerCase());
+
+    const eventDate = event.date
+      ? event.date.split("T")[0]
+      : "";
+
+    const matchesDate =
+      !date || eventDate === date;
+
+    return (
+      matchesSearch &&
+      matchesCategory &&
+      matchesAgeGroup &&
+      matchesLocation &&
+      matchesDate
+    );
+  });
+
   return (
     <div>
       <h1>Community Connect</h1>
-      <h2>Community Events</h2>
+      <h2>Find Community Events</h2>
+
+      <input
+        type="text"
+        placeholder="Search events..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="">All Categories</option>
+        <option value="Music">Music</option>
+        <option value="Sports">Sports</option>
+        <option value="Health & Wellness">Health & Wellness</option>
+        <option value="Children & Family">Children & Family</option>
+        <option value="Business & Networking">Business & Networking</option>
+        <option value="Arts & Culture">Arts & Culture</option>
+        <option value="Pets & Adoption">Pets & Adoption</option>
+      </select>
+
+      <select
+        value={ageGroup}
+        onChange={(e) => setAgeGroup(e.target.value)}
+      >
+        <option value="">All Age Groups</option>
+        <option value="All Ages">All Ages</option>
+        <option value="Children">Children</option>
+        <option value="Adult">Adult</option>
+        <option value="21+">21+</option>
+        <option value="Not Specified">Not Specified</option>
+      </select>
+
+      <input
+        type="text"
+        placeholder="Location"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+      />
+
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
 
       {message && <p>{message}</p>}
 
-      {events.map((event) => (
+      <p>
+        Showing {filteredEvents.length} of {events.length} events
+      </p>
+
+      {filteredEvents.map((event) => (
         <EventCard
           key={event._id}
           event={event}
