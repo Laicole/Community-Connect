@@ -12,7 +12,6 @@ function EventDetails() {
     const loadEvent = async () => {
       try {
         const data = await getEventById(id);
-
         setEvent(data);
         setMessage("");
       } catch (error) {
@@ -33,51 +32,42 @@ function EventDetails() {
 
   return (
     <div>
-      {event.image && (
-        <img
-          src={event.image}
-          alt={event.title}
-          width="400"
-        />
-      )}
-
       <h1>{event.title}</h1>
 
       <p>{event.description}</p>
 
-      <p>Category: {event.category}</p>
-
-      <p>Age Group: {event.ageGroup}</p>
-
       <p>
-        Date: {new Date(event.date).toLocaleDateString()}
+        <strong>Category:</strong> {event.category}
       </p>
 
       <p>
-        Time: {event.startTime || event.time}
-        {event.endTime && ` - ${event.endTime}`}
+        <strong>Age Group:</strong> {event.ageGroup}
       </p>
 
       <p>
-        Location: {event.location?.venue}
+        <strong>Date:</strong>{" "}
+        {new Date(event.date).toLocaleDateString()}
       </p>
 
       <p>
-        {event.location?.street}
+        <strong>Time:</strong> {event.time}
+      </p>
+
+      {event.location && (
+        <p>
+          <strong>Location:</strong> {event.location}
+        </p>
+      )}
+
+      <p>
+        <strong>Organizer:</strong> {event.organizer}
       </p>
 
       <p>
-        {event.location?.city}, {event.location?.state}{" "}
-        {event.location?.zipCode}
-      </p>
-
-      <p>Organizer: {event.organizer}</p>
-
-      <p>
-        Cost:{" "}
+        <strong>Cost:</strong>{" "}
         {event.cost === null || event.cost === undefined
           ? "Not specified"
-          : event.cost === 0
+          : Number(event.cost) === 0
             ? "Free"
             : `$${event.cost}`}
       </p>

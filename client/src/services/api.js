@@ -51,7 +51,7 @@ export const getEvents = async () => {
   return data;
 };
 
-// GET ONE EVENT
+// GET ONE EVENT BY ID
 export const getEventById = async (id) => {
   const response = await fetch(`${API_URL}/events/${id}`);
 
