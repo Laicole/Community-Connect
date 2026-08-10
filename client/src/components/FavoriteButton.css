@@ -1,0 +1,34 @@
+.favorite-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.favorite-button {
+  border: 1px solid #d95c1a;
+  background: transparent;
+  color: #d95c1a;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.favorite-button:hover {
+  background: #d95c1a;
+  color: white;
+}
+
+.favorite-message {
+  color: #899a7a;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+}

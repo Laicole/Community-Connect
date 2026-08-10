@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./FavoriteButton.css";
 
 function FavoriteButton({ eventId }) {
   const [message, setMessage] = useState("");
@@ -23,22 +24,29 @@ function FavoriteButton({ eventId }) {
         throw new Error(data.message || "Failed to save favorite");
       }
 
-      setMessage("Saved to favorites!");
+      setMessage("Saved!");
     } catch (error) {
       setMessage(error.message);
     }
   };
 
   return (
-    <div>
-      <button onClick={addFavorite}>
-        Save to Favorites
+    <div className="favorite-wrap">
+      <button
+        type="button"
+        className="favorite-button"
+        onClick={addFavorite}
+      >
+        ♡ Save
       </button>
 
-      {message && <p>{message}</p>}
+      {message && (
+        <span className="favorite-message">
+          {message}
+        </span>
+      )}
     </div>
   );
 }
 
 export default FavoriteButton;
-
