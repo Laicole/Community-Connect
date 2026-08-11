@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { loginUser } from "../services/api";
+import "./Auth.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -24,30 +26,54 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="auth-page">
+      <section className="auth-card">
+        <h1>Welcome back</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <p className="auth-subtitle">
+          Sign in to discover events, save favorites, and manage your profile.
+        </p>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email</label>
 
-        <button type="submit">
-          Login
-        </button>
-      </form>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-      {message && <p>{message}</p>}
+          <div>
+            <label htmlFor="password">Password</label>
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button className="auth-button" type="submit">
+            Login
+          </button>
+        </form>
+
+        {message && (
+          <p className="auth-message">
+            {message}
+          </p>
+        )}
+
+        <p className="auth-link">
+          New here? <Link to="/register">Create an account</Link>
+        </p>
+      </section>
     </div>
   );
 }

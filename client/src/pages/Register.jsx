@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { registerUser } from "../services/api";
+import "./Auth.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -45,56 +47,107 @@ function Register() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className="auth-page">
+      <section className="auth-card">
+        <h1>Create an account</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-        />
+        <p className="auth-subtitle">
+          Join Community Connect and start discovering events happening in
+          your community.
+        </p>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="name">Full Name</label>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-        />
+            <input
+              id="name"
+              type="text"
+              name="name"
+              placeholder="Your name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <input
-          type="text"
-          name="ageGroup"
-          placeholder="Age Group"
-          value={formData.ageGroup}
-          onChange={handleChange}
-        />
+          <div>
+            <label htmlFor="email">Email</label>
 
-        <input
-          type="text"
-          name="interests"
-          placeholder="Interests: Music, Sports, Technology"
-          value={formData.interests}
-          onChange={handleChange}
-        />
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <button type="submit">
-          Register
-        </button>
-      </form>
+          <div>
+            <label htmlFor="password">Password</label>
 
-      {message && <p>{message}</p>}
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Create a password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="ageGroup">Age Group</label>
+
+            <select
+              id="ageGroup"
+              name="ageGroup"
+              value={formData.ageGroup}
+              onChange={handleChange}
+            >
+              <option value="">Select age group</option>
+              <option value="Children">Children</option>
+              <option value="Teen">Teen</option>
+              <option value="Adult">Adult</option>
+              <option value="Senior">Senior</option>
+              <option value="21+">21+</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="interests">Interests</label>
+
+            <input
+              id="interests"
+              type="text"
+              name="interests"
+              placeholder="Music, Sports, Arts"
+              value={formData.interests}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button className="auth-button" type="submit">
+            Create Account
+          </button>
+        </form>
+
+        {message && (
+          <p className="auth-message">
+            {message}
+          </p>
+        )}
+
+        <p className="auth-link">
+          Already have an account?{" "}
+          <Link to="/login">
+            Login
+          </Link>
+        </p>
+      </section>
     </div>
   );
 }
