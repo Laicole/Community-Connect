@@ -99,6 +99,17 @@
   .dashboard-hero {
     padding: 40px;
   }
+
+  .dashboard-section:first-of-type{
+    background-color: #fff8f1;
+    border: 1px solid #f1ddca;
+    border-radius: 24px;
+    padding: 28px;
+  }
+  .dashboard-section:first-of-type .dashboard-heading span {
+  color: #d95c1a;
+}
+
 }
 
 @media (max-width: 767px) {

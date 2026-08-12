@@ -36,7 +36,37 @@ export const registerUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
+const calculateAgeGroup = (dateOfBirth) => {
+  const today = new Date();
+  const birthDate = new Date(dateOfBirth);
 
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const monthDifference =
+    today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 &&
+      today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  if (age < 13) {
+    return "Children";
+  }
+
+  if (age < 18) {
+    return "Teen";
+  }
+
+  if (age < 65) {
+    return "Adult";
+  }
+
+  return "Senior";
+};
     return res.status(201).json({
       _id: user._id,
       name: user.name,

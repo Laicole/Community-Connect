@@ -15,9 +15,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    dateOfBirth:{
+    type: Date,
+    required: true
+  },
+
     ageGroup: {
-      type: String
-    },
+    type: String,
+    enum: ["Children", "Teen", "Adult", "Senior"],
+    required: true
+},
     interests: [
       {
         type: String

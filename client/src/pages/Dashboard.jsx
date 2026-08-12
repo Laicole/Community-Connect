@@ -91,8 +91,8 @@ function Dashboard() {
       <section className="dashboard-section">
         <div className="dashboard-heading">
           <div>
-            <span>✨ RECOMMENDED FOR YOU</span>
-            <h2>AI Picks</h2>
+            <span>✨ PERSONALIZED FOR YOU</span>
+            <h2>Recommended Events</h2>
           </div>
         </div>
 

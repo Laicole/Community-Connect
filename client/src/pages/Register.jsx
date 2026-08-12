@@ -5,12 +5,12 @@ import "./Auth.css";
 
 function Register() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    ageGroup: "",
-    interests: ""
-  });
+  name: "",
+  email: "",
+  password: "",
+  dateOfBirth: "",
+  interests: ""
+});
 
   const [message, setMessage] = useState("");
 
@@ -25,16 +25,16 @@ function Register() {
     e.preventDefault();
 
     try {
-      const userData = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        ageGroup: formData.ageGroup,
-        interests: formData.interests
-          .split(",")
-          .map((interest) => interest.trim())
-          .filter(Boolean)
-      };
+     const userData = {
+  name: formData.name,
+  email: formData.email,
+  password: formData.password,
+  dateOfBirth: formData.dateOfBirth,
+  interests: formData.interests
+    .split(",")
+    .map((interest) => interest.trim())
+    .filter(Boolean)
+};
 
       const data = await registerUser(userData);
 
@@ -100,21 +100,18 @@ function Register() {
           </div>
 
           <div>
-            <label htmlFor="ageGroup">Age Group</label>
+            <label htmlFor="dateOfBirth">
+               Date of Birth
+            </label>
 
-            <select
-              id="ageGroup"
-              name="ageGroup"
-              value={formData.ageGroup}
+            <input
+              id="dateOfBirth"
+              name="dateOfBirth"
+              type="date"
+              value={formData.dateOfBirth}
               onChange={handleChange}
-            >
-              <option value="">Select age group</option>
-              <option value="Children">Children</option>
-              <option value="Teen">Teen</option>
-              <option value="Adult">Adult</option>
-              <option value="Senior">Senior</option>
-              <option value="21+">21+</option>
-            </select>
+              required
+            />
           </div>
 
           <div>
