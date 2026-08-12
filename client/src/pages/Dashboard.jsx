@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { getEvents } from "../services/api";
+import { getEvents, getRecommendations } from "../services/api";
 import EventCard from "../components/EventCard";
 import "./Dashboard.css";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const [message, setMessage] = useState("Loading dashboard...");
 
   useEffect(() => {
@@ -31,9 +32,18 @@ function Dashboard() {
         }
 
         const eventData = await getEvents();
+        const recommendationData = await getRecommendations();
+
+        console.log("PROFILE:", profile);
+        console.log("EVENTS:", eventData);
+        console.log(
+          "DASHBOARD RECOMMENDATIONS:",
+          recommendationData
+        );
 
         setUser(profile);
         setEvents(eventData);
+        setRecommendations(recommendationData);
         setMessage("");
       } catch (error) {
         setMessage(error.message);
@@ -49,12 +59,16 @@ function Dashboard() {
 
   const favoriteEvents = events.filter((event) =>
     user?.favorites?.some(
-      (favoriteId) => favoriteId.toString() === event._id
+      (favoriteId) =>
+        favoriteId.toString() === event._id
     )
   );
 
   const upcomingEvents = [...events]
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .sort(
+      (a, b) =>
+        new Date(a.date) - new Date(b.date)
+    )
     .slice(0, 3);
 
   return (
@@ -72,6 +86,35 @@ function Dashboard() {
           Discover what’s happening nearby and keep track of
           the events that matter to you.
         </p>
+      </section>
+
+      <section className="dashboard-section">
+        <div className="dashboard-heading">
+          <div>
+            <span>✨ RECOMMENDED FOR YOU</span>
+            <h2>AI Picks</h2>
+          </div>
+        </div>
+
+        {recommendations.length === 0 ? (
+          <div className="dashboard-empty">
+            <p>
+              Add more interests to your profile to get better
+              recommendations.
+            </p>
+          </div>
+        ) : (
+          <div className="dashboard-grid">
+            {recommendations
+              .slice(0, 3)
+              .map((event) => (
+                <EventCard
+                  key={event._id}
+                  event={event}
+                />
+              ))}
+          </div>
+        )}
       </section>
 
       <section className="dashboard-section">
@@ -108,12 +151,14 @@ function Dashboard() {
           </div>
         ) : (
           <div className="dashboard-grid">
-            {favoriteEvents.slice(0, 3).map((event) => (
-              <EventCard
-                key={event._id}
-                event={event}
-              />
-            ))}
+            {favoriteEvents
+              .slice(0, 3)
+              .map((event) => (
+                <EventCard
+                  key={event._id}
+                  event={event}
+                />
+              ))}
           </div>
         )}
       </section>

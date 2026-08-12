@@ -63,3 +63,28 @@ export const getEventById = async (id) => {
 
   return data;
 };
+// GET RECOMMENDED EVENTS
+export const getRecommendations = async () => {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_URL}/users/recommendations`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const data = await response.json();
+
+  console.log("RECOMMENDATIONS:", data);
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to load recommendations"
+    );
+  }
+
+  return data;
+};
