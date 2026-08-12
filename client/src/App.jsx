@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import EventDetails from "./pages/EventDetails";
 import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
     </BrowserRouter>

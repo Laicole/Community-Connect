@@ -80,7 +80,7 @@
     bottom: 12px;
 
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
 
     padding: 10px;
     background: #fffdf9;
@@ -98,7 +98,7 @@
     color: #766b63;
     text-align: center;
     font-family: "DM Sans", sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 600;
     text-decoration: none;
     padding: 8px 2px;

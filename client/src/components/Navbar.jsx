@@ -23,6 +23,7 @@ function Navbar() {
             <Link to="/">Events</Link>
             <Link to="/favorites">Favorites</Link>
             <Link to="/profile">Profile</Link>
+            <Link to="/dashboard">Dashboard</Link>
 
             {!token ? (
               <>
@@ -49,6 +50,7 @@ function Navbar() {
         <Link to="/">Events</Link>
         <Link to="/favorites">Favorites</Link>
         <Link to="/profile">Profile</Link>
+        <Link to="/dashboard">Dashboard</Link>
       </nav>
     </>
   );
