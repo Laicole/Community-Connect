@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../services/api";
 import EventCard from "../components/EventCard";
+import "./Favorites.css";
 
 function Favorites() {
   const [favorites, setFavorites] = useState([]);
@@ -11,7 +12,6 @@ function Favorites() {
       try {
         const token = localStorage.getItem("token");
 
-        // Get logged-in user's profile
         const profileResponse = await fetch(
           "http://localhost:5000/api/v1/users/profile",
           {
@@ -29,13 +29,12 @@ function Favorites() {
           );
         }
 
-        // Get all events
         const events = await getEvents();
 
-        // Keep only saved event IDs
         const favoriteEvents = events.filter((event) =>
           profile.favorites.some(
-            (favoriteId) => favoriteId.toString() === event._id
+            (favoriteId) =>
+              favoriteId.toString() === event._id
           )
         );
 
@@ -50,21 +49,32 @@ function Favorites() {
   }, []);
 
   return (
-    <div>
-      <h1>My Favorites</h1>
+    <div className="favorites-page">
+      <div className="favorites-heading">
+        <span>YOUR SAVED EVENTS</span>
+        <h1>Favorites</h1>
+        <p>
+          Keep track of events you want to come back to.
+        </p>
+      </div>
 
       {message && <p>{message}</p>}
 
       {!message && favorites.length === 0 && (
-        <p>You haven't saved any events yet.</p>
+        <div className="favorites-empty">
+          <h2>No favorites yet</h2>
+          <p>Save an event and it will appear here.</p>
+        </div>
       )}
 
-      {favorites.map((event) => (
-        <EventCard
-          key={event._id}
-          event={event}
-        />
-      ))}
+      <div className="favorites-grid">
+        {favorites.map((event) => (
+          <EventCard
+            key={event._id}
+            event={event}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./Profile.css";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -83,10 +84,19 @@ function Profile() {
   }
 
   return (
-    <div>
-      <h1>My Profile</h1>
+   <div className="profile-page">
+    <section className="profile-card">
+      <div className="profile-header">
+        <div>
+          <span className="profile-eyebrow">YOUR COMMUNITY PROFILE</span>
+          <h1>My Profile</h1>
+          <p>
+            Update your interests so Community Connect can recommend better events.
+          </p>
+        </div>
+      </div>
 
-      <form onSubmit={handleUpdate}>
+      <form className="profile-form" onSubmit={handleUpdate}>
         <label>Name</label>
         <input
           type="text"
@@ -120,8 +130,9 @@ function Profile() {
         </button>
       </form>
 
-      {message && <p>{message}</p>}
-    </div>
+      {message && <p className="profile-message">{message}</p>}
+    </section>
+  </div>
   );
 }
 
