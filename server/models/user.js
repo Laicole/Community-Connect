@@ -15,12 +15,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    dateOfBirth:{
+
+  dateOfBirth:{
     type: Date,
     required: true
   },
 
-    ageGroup: {
+  ageGroup: {
     type: String,
     enum: ["Children", "Teen", "Adult", "Senior"],
     required: true
