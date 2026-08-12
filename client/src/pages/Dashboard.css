@@ -63,6 +63,34 @@
   color: #766b63;
 }
 
+.recommendation-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recommendation-meta {
+  background: #fff3e8;
+  border: 1px solid #f2d3bd;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.match-score {
+  display: inline-block;
+  color: #d95c1a;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.recommendation-meta p {
+  margin: 5px 0 0;
+  color: #766b63;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 1023px) {
   .dashboard-grid {
     grid-template-columns: repeat(2, 1fr);

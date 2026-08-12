@@ -105,14 +105,21 @@ function Dashboard() {
           </div>
         ) : (
           <div className="dashboard-grid">
-            {recommendations
-              .slice(0, 3)
-              .map((event) => (
-                <EventCard
-                  key={event._id}
-                  event={event}
-                />
-              ))}
+            {recommendations.slice(0, 3).map((event) => (
+              <div className="recommendation-item" key={event._id}>
+                <div className="recommendation-meta">
+                  <span className="match-score">
+                    {event.matchScore}% match
+                  </span>
+
+                  <p>
+                    {event.recommendationReason}
+                  </p>
+                </div>
+
+                <EventCard event={event} />
+              </div>
+            ))}
           </div>
         )}
       </section>
