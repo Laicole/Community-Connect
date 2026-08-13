@@ -251,13 +251,13 @@ Protected routes require a valid JWT.
 ### Live Application
 
 ```text
-Coming soon
+(https://community-connect-qoa6o0ljq-lai-cole.vercel.app/)
 ```
 
 ### Backend API
 
 ```text
-Coming soon
+(https://community-connect-cw28.onrender.com/)
 ```
 
 The deployment links will be added after the production frontend and backend are deployed.
