@@ -1,5 +1,24 @@
-const API_URL = "http://localhost:5000/api/v1";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api/v1";
+  
+  export const getProfile = async () => {
+  const token = localStorage.getItem("token");
 
+  const response = await fetch(`${API_URL}/users/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to load profile");
+  }
+
+  return data;
+};
 // REGISTER USER
 export const registerUser = async (userData) => {
   const response = await fetch(`${API_URL}/users/register`, {
