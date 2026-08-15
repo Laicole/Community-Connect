@@ -14,21 +14,32 @@ function Navbar() {
     <>
       <header className="site-header">
         <div className="navbar-container">
+
           <Link to="/" className="brand">
-            Community Connect
+            <img
+              src="/community-connect-logo.png"
+              alt="Community Connect"
+              className="nav-logo"
+            />
           </Link>
 
           <nav className="desktop-nav">
             <Link to="/">Home</Link>
             <Link to="/">Events</Link>
+            <Link to="/dashboard">Dashboard</Link>
             <Link to="/favorites">Favorites</Link>
             <Link to="/profile">Profile</Link>
-            <Link to="/dashboard">Dashboard</Link>
 
             {!token ? (
               <>
-                <Link to="/login">Login</Link>
-                <Link to="/register" className="nav-cta">
+                <Link to="/login">
+                  Login
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="nav-cta"
+                >
                   Join Community
                 </Link>
               </>
@@ -48,9 +59,9 @@ function Navbar() {
       <nav className="mobile-nav">
         <Link to="/">Home</Link>
         <Link to="/">Events</Link>
+        <Link to="/dashboard">Dashboard</Link>
         <Link to="/favorites">Favorites</Link>
         <Link to="/profile">Profile</Link>
-        <Link to="/dashboard">Dashboard</Link>
       </nav>
     </>
   );

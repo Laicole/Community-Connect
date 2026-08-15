@@ -1,35 +1,57 @@
 import { useEffect, useState } from "react";
-import { getEvents } from "../services/api";
+import { getEvents, getRecommendations } from "../services/api";
 import EventCard from "../components/EventCard";
 import "./Home.css";
 
 function Home() {
   const [events, setEvents] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [ageGroup, setAgeGroup] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
+
   const [message, setMessage] = useState("Loading events...");
 
   useEffect(() => {
-    const loadEvents = async () => {
+    const loadHome = async () => {
       try {
-        const data = await getEvents();
-        setEvents(data);
+        const eventData = await getEvents();
+
+        setEvents(eventData);
         setMessage("");
+
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          try {
+            const recommendationData =
+              await getRecommendations();
+
+            setRecommendations(recommendationData);
+          } catch (error) {
+            console.error(
+              "Could not load recommendations:",
+              error.message
+            );
+          }
+        }
       } catch (error) {
         setMessage(error.message);
       }
     };
 
-    loadEvents();
+    loadHome();
   }, []);
 
   const filteredEvents = events.filter((event) => {
+    const searchText = search.toLowerCase();
+
     const matchesSearch =
-      event.title.toLowerCase().includes(search.toLowerCase()) ||
-      event.description.toLowerCase().includes(search.toLowerCase());
+      event.title?.toLowerCase().includes(searchText) ||
+      event.description?.toLowerCase().includes(searchText);
 
     const matchesCategory =
       !category || event.category === category;
@@ -37,18 +59,14 @@ function Home() {
     const matchesAgeGroup =
       !ageGroup || event.ageGroup === ageGroup;
 
-    const eventLocation =
-      typeof event.location === "string"
-        ? event.location
-        : `${event.location?.venue || ""} ${event.location?.city || ""} ${event.location?.state || ""}`;
-
     const matchesLocation =
       !location ||
-      eventLocation.toLowerCase().includes(location.toLowerCase());
+      event.location
+        ?.toLowerCase()
+        .includes(location.toLowerCase());
 
-    const eventDate = event.date
-      ? event.date.split("T")[0]
-      : "";
+    const eventDate =
+      event.date?.split("T")[0] || "";
 
     const matchesDate =
       !date || eventDate === date;
@@ -62,90 +80,223 @@ function Home() {
     );
   });
 
+  const featuredEvent = filteredEvents[0];
+
+  const applyCategory = (value) => {
+    setCategory(value);
+  };
+
+  const showFreeEvents = () => {
+    setSearch("");
+    setCategory("");
+    setAgeGroup("");
+    setLocation("");
+    setDate("");
+  };
+
   return (
     <div className="home-page">
-      <section className="hero">
-        <div className="hero-copy">
-          <span className="eyebrow">LOCAL EXPERIENCES</span>
+      {/* HERO */}
 
-          <h1>Find something worth showing up for.</h1>
+      <section className="home-hero">
+        <span className="hero-greeting">
+          GOOD MORNING ☀️
+        </span>
 
-          <p>
-            Discover community events that match your interests,
-            age group, and location.
-          </p>
-        </div>
+        <h1>
+          Find something worth showing up for.
+        </h1>
 
-        <div className="search-panel">
+        <p>
+          Discover local events, activities, and
+          community experiences near you.
+        </p>
+
+        <div className="home-search">
           <input
             type="text"
             placeholder="Search events..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
           />
 
           <input
             type="text"
             placeholder="Location"
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) =>
+              setLocation(e.target.value)
+            }
           />
 
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            <option value="Music">Music</option>
-            <option value="Sports">Sports</option>
-            <option value="Health & Wellness">Health & Wellness</option>
-            <option value="Children & Family">Children & Family</option>
-            <option value="Business & Networking">Business & Networking</option>
-            <option value="Arts & Culture">Arts & Culture</option>
-            <option value="Pets & Adoption">Pets & Adoption</option>
-          </select>
+          <button type="button">
+            Find Events
+          </button>
+        </div>
 
-          <select
-            value={ageGroup}
-            onChange={(e) => setAgeGroup(e.target.value)}
-          >
-            <option value="">All Age Groups</option>
-            <option value="All Ages">All Ages</option>
-            <option value="Children">Children</option>
-            <option value="Adult">Adult</option>
-            <option value="21+">21+</option>
-            <option value="Not Specified">Not Specified</option>
-          </select>
+        {/* QUICK FILTERS */}
 
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+        <div className="quick-filters">
+          <button
+            type="button"
+            onClick={() => setLocation("Monticello")}
+          >
+            📍 Near You
+          </button>
+
+          <button type="button">
+            📅 This Weekend
+          </button>
+
+          <button
+            type="button"
+            onClick={showFreeEvents}
+          >
+            🎟️ Free Events
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              applyCategory("Music")
+            }
+          >
+            🎵 Music
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              applyCategory("Arts & Culture")
+            }
+          >
+            🎨 Arts
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              applyCategory("Health & Wellness")
+            }
+          >
+            🌿 Wellness
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              applyCategory("")
+            }
+          >
+            All Events
+          </button>
         </div>
       </section>
 
-      <section className="events-section">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">EXPLORE</span>
-            <h2>Community Events</h2>
+      {message && (
+        <p className="home-message">
+          {message}
+        </p>
+      )}
+
+      {/* FEATURED EVENT */}
+
+      {featuredEvent && (
+        <section className="home-section">
+          <div className="section-title-row">
+            <div>
+              <span className="section-eyebrow">
+                FEATURED
+              </span>
+
+              <h2>Featured Event</h2>
+            </div>
           </div>
 
-          <p>
-            Showing {filteredEvents.length} of {events.length} events
-          </p>
-        </div>
+          <div className="featured-event">
+            <EventCard event={featuredEvent} />
+          </div>
+        </section>
+      )}
 
-        {message && <p>{message}</p>}
+      {/* AI PICKS */}
 
-        <div className="events-scroll">
-          {filteredEvents.map((event) => (
-            <div className="event-slide" key={event._id}>
-              <EventCard event={event} />
+      {recommendations.length > 0 && (
+        <section className="home-section ai-section">
+          <div className="section-title-row">
+            <div>
+              <span className="section-eyebrow">
+                ✨ PERSONALIZED FOR YOU
+              </span>
+
+              <h2>AI Picks</h2>
             </div>
-          ))}
+          </div>
+
+          <div className="events-scroll">
+            {recommendations
+              .slice(0, 6)
+              .map((event) => (
+                <div
+                  className="event-slide"
+                  key={event._id}
+                >
+                  <div className="recommendation-label">
+                    <strong>
+                      {event.matchScore}% match
+                    </strong>
+
+                    <span>
+                      {event.recommendationReason}
+                    </span>
+                  </div>
+
+                  <EventCard event={event} />
+                </div>
+              ))}
+          </div>
+        </section>
+      )}
+
+      {/* UPCOMING EVENTS */}
+
+      <section className="home-section">
+        <div className="section-title-row">
+          <div>
+            <span className="section-eyebrow">
+              EXPLORE
+            </span>
+
+            <h2>Upcoming Events</h2>
+          </div>
+
+          <span className="event-count">
+            {filteredEvents.length} events
+          </span>
         </div>
+
+        {filteredEvents.length === 0 ? (
+          <div className="home-empty">
+            <h3>No events found</h3>
+
+            <p>
+              Try changing your search or filters.
+            </p>
+          </div>
+        ) : (
+          <div className="events-scroll">
+            {filteredEvents.map((event) => (
+              <div
+                className="event-slide"
+                key={event._id}
+              >
+                <EventCard event={event} />
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
