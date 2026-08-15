@@ -139,12 +139,11 @@ function Home() {
 
         {message && <p>{message}</p>}
 
-        <div className="events-grid">
+        <div className="events-scroll">
           {filteredEvents.map((event) => (
-            <EventCard
-              key={event._id}
-              event={event}
-            />
+            <div className="event-slide" key={event._id}>
+              <EventCard event={event} />
+            </div>
           ))}
         </div>
       </section>

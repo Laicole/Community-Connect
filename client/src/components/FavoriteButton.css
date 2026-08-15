@@ -4,21 +4,20 @@
     gap: 6px;
 }
 .favorite-button {
-  border: 1px solid #d95c1a;
-  background: transparent;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #fffdf9;
   color: #d95c1a;
-
-  padding: 10px 14px;
-  border-radius: 10px;
-
-  font-family: "DM Sans", sans-serif;
-  font-weight: 700;
-
+  font-size: 1.4rem;
   cursor: pointer;
 
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 12px rgba(69, 48, 35, 0.2);
 }
 
 .favorite-button:hover {

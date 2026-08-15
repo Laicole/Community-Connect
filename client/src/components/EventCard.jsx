@@ -13,13 +13,30 @@ function EventCard({ event }) {
     return `${month}/${day}/${year}`;
   };
 
+  const handleImageError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/event-placeholder.jpg";
+  };
+
   return (
     <article className="event-card">
+      <div className="event-image-container">
+        <img
+          src={event.image || "/event-placeholder.jpg"}
+          alt={event.title || "Community event"}
+          className="event-image"
+          onError={handleImageError}
+        />
+
+        <div className="event-favorite">
+          <FavoriteButton eventId={event._id} />
+        </div>
+      </div>
 
       <div className="event-card-content">
         <div className="event-card-top">
           <span className="category-badge">
-            {event.category}
+            {event.category || "Community"}
           </span>
 
           <span className="event-date">
@@ -41,12 +58,16 @@ function EventCard({ event }) {
 
           <p>
             <strong>Location</strong>
-            <span>{event.location || "Location TBD"}</span>
+            <span>
+              {event.location || "Location TBD"}
+            </span>
           </p>
 
           <p>
             <strong>Age Group</strong>
-            <span>{event.ageGroup}</span>
+            <span>
+              {event.ageGroup || "Not Specified"}
+            </span>
           </p>
         </div>
 
@@ -57,8 +78,6 @@ function EventCard({ event }) {
           >
             View Details
           </Link>
-
-          <FavoriteButton eventId={event._id} />
         </div>
       </div>
     </article>
