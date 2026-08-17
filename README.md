@@ -135,7 +135,7 @@ You will also need access to a MongoDB database.
 Clone the repository:
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone <(https://github.com/Laicole/Community-Connect.git)>
 ```
 
 Move into the project:
