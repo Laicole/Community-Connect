@@ -36,7 +36,35 @@
 
   text-decoration: none;
 }
+.favorites-nav-link {
+  position: relative;
 
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.favorites-badge {
+  min-width: 19px;
+  height: 19px;
+
+  padding: 0 5px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #cf3e32;
+  color: white;
+
+  border-radius: 999px;
+
+  font-size: 0.65rem;
+  font-weight: 800;
+
+  line-height: 1;
+}
 .nav-logo {
   width: 210px;
   max-width: 100%;
@@ -108,34 +136,6 @@
 
 /* TABLET */
 
-@media (max-width: 1023px) {
-  .navbar-container {
-    min-height: 74px;
-    gap: 16px;
-  }
-
-  .nav-logo {
-    width: 165px;
-    height: 54px;
-  }
-
-  .desktop-nav {
-    gap: 12px;
-  }
-
-  .desktop-nav a {
-    font-size: 0.76rem;
-  }
-
-  .nav-cta,
-  .logout-button {
-    padding: 9px 12px;
-    font-size: 0.75rem;
-  }
-}
-
-/* MOBILE */
-
 @media (max-width: 767px) {
   .navbar-container {
     min-height: 70px;
@@ -165,7 +165,9 @@
     bottom: 12px;
 
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    grid-template-columns:
+      repeat(auto-fit, minmax(60px, 1fr));
 
     gap: 2px;
 
@@ -206,5 +208,18 @@
 
   .mobile-nav a:hover {
     color: var(--accent);
+  }
+
+  .favorites-nav-link {
+    gap: 4px;
+  }
+
+  .favorites-badge {
+    min-width: 17px;
+    height: 17px;
+
+    padding: 0 4px;
+
+    font-size: 0.58rem;
   }
 }

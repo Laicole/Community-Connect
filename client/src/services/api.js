@@ -41,6 +41,31 @@ export const getProfile = async () => {
   );
 };
 
+export const updateProfile = async (profileData) => {
+ const token = getToken();
+
+  if (!token) {
+    throw new Error("You must be logged in.");
+  }
+
+  const response = await fetch(
+    `${API_URL}/users/profile`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(profileData)
+    }
+  );
+
+  return handleResponse(
+    response,
+    "Failed to update profile"
+  );
+};
+
 // REGISTER USER
 export const registerUser = async (userData) => {
   const response = await fetch(

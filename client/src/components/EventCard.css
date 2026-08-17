@@ -18,24 +18,15 @@
 
 .event-image-container {
   width: 100%;
-  height: 220px;
-
-  position: relative;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
-
-  background: #e8ded3;
 }
 
 .event-image {
   width: 100%;
   height: 100%;
-
-  display: block;
-
   object-fit: cover;
-  object-position: center;
-
-  max-width: 100%;
+  object-position: center 25%;
 }
 
 .event-favorite {

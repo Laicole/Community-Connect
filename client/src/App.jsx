@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import Events from "./pages/Events";
@@ -18,6 +19,8 @@ function App() {
 
       <main>
         <Routes>
+          {/* PUBLIC ROUTES */}
+
           <Route path="/" element={<Home />} />
 
           <Route
@@ -31,21 +34,6 @@ function App() {
           />
 
           <Route
-            path="/dashboard"
-            element={<Dashboard />}
-          />
-
-          <Route
-            path="/favorites"
-            element={<Favorites />}
-          />
-
-          <Route
-            path="/profile"
-            element={<Profile />}
-          />
-
-          <Route
             path="/login"
             element={<Login />}
           />
@@ -53,6 +41,35 @@ function App() {
           <Route
             path="/register"
             element={<Register />}
+          />
+
+          {/* PROTECTED ROUTES */}
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/favorites"
+            element={
+              <ProtectedRoute>
+                <Favorites />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </main>
