@@ -50,9 +50,87 @@
   display: flex;
   flex-wrap: wrap;
 
+  justify-content: center;
+
   gap: 10px;
 
   margin-bottom: 28px;
+}
+/* EVENT SEARCH */
+
+.events-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+
+  width: 100%;
+  max-width: 760px;
+
+  margin: 0 auto 24px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 4px 14px rgba(69, 48, 35, 0.06);
+}
+
+.events-search input {
+  width: 100%;
+  min-width: 0;
+
+  padding: 15px 18px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+  color: var(--text-h);
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+}
+
+.events-search input::placeholder {
+  color: #998b81;
+}
+
+.events-search:focus-within {
+  border-color: var(--accent);
+
+  box-shadow:
+    0 0 0 3px rgba(217, 92, 26, 0.12);
+}
+
+.events-search button {
+  min-width: 100px;
+
+  padding: 0 24px;
+
+  border: none;
+
+  background: var(--accent);
+  color: #ffffff;
+
+  font-family: "DM Sans", sans-serif;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.events-search button:hover {
+  background: #b84912;
+}
+
+.events-search button:active {
+  transform: scale(0.98);
 }
 
 .category-filter {
@@ -132,6 +210,7 @@
   min-width: 0;
 }
 
+
 /* TABLET - 2 COLUMNS */
 
 @media (max-width: 900px) {
@@ -150,6 +229,7 @@
 /* MOBILE - 1 COLUMN */
 
 @media (max-width: 600px) {
+  
   .events-page {
     padding-top: 24px;
     padding-bottom: 110px;
@@ -157,9 +237,7 @@
 
   .event-category-filters {
     flex-wrap: nowrap;
-
     overflow-x: auto;
-
     padding-bottom: 8px;
   }
 
@@ -169,7 +247,36 @@
 
   .explore-events-grid {
     grid-template-columns: 1fr;
-
     gap: 16px;
+  }
+
+  .events-search {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+
+    overflow: visible;
+
+    background: transparent;
+
+    border: none;
+    box-shadow: none;
+  }
+
+  .events-search input {
+    padding: 14px 16px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .events-search button {
+    width: 100%;
+
+    margin-top: 10px;
+    padding: 13px 20px;
+
+    border-radius: 12px;
   }
 }

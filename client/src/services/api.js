@@ -1,90 +1,115 @@
 const API_URL =
   import.meta.env.VITE_API_URL ||
   "http://localhost:5000/api/v1";
-  
-  export const getProfile = async () => {
-  const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/users/profile`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+const getToken = () => {
+  return localStorage.getItem("token");
+};
 
+const handleResponse = async (response, fallbackMessage) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed to load profile");
+    throw new Error(
+      data.message || fallbackMessage
+    );
   }
 
   return data;
 };
-// REGISTER USER
-export const registerUser = async (userData) => {
-  const response = await fetch(`${API_URL}/users/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(userData)
-  });
 
-  const data = await response.json();
+// GET PROFILE
+export const getProfile = async () => {
+  const token = getToken();
 
-  if (!response.ok) {
-    throw new Error(data.message || "Registration failed");
+  if (!token) {
+    throw new Error("You must be logged in.");
   }
 
-  return data;
+  const response = await fetch(
+    `${API_URL}/users/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return handleResponse(
+    response,
+    "Failed to load profile"
+  );
+};
+
+// REGISTER USER
+export const registerUser = async (userData) => {
+  const response = await fetch(
+    `${API_URL}/users/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userData)
+    }
+  );
+
+  return handleResponse(
+    response,
+    "Registration failed"
+  );
 };
 
 // LOGIN USER
 export const loginUser = async (credentials) => {
-  const response = await fetch(`${API_URL}/users/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(credentials)
-  });
+  const response = await fetch(
+    `${API_URL}/users/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(credentials)
+    }
+  );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Login failed");
-  }
-
-  return data;
+  return handleResponse(
+    response,
+    "Login failed"
+  );
 };
 
 // GET ALL EVENTS
 export const getEvents = async () => {
-  const response = await fetch(`${API_URL}/events`);
+  const response = await fetch(
+    `${API_URL}/events`
+  );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to fetch events");
-  }
-
-  return data;
+  return handleResponse(
+    response,
+    "Failed to fetch events"
+  );
 };
 
 // GET ONE EVENT BY ID
 export const getEventById = async (id) => {
-  const response = await fetch(`${API_URL}/events/${id}`);
+  const response = await fetch(
+    `${API_URL}/events/${id}`
+  );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to fetch event");
-  }
-
-  return data;
+  return handleResponse(
+    response,
+    "Failed to fetch event"
+  );
 };
+
 // GET RECOMMENDED EVENTS
 export const getRecommendations = async () => {
-  const token = localStorage.getItem("token");
+  const token = getToken();
+
+  if (!token) {
+    throw new Error("You must be logged in.");
+  }
 
   const response = await fetch(
     `${API_URL}/users/recommendations`,
@@ -95,15 +120,8 @@ export const getRecommendations = async () => {
     }
   );
 
-  const data = await response.json();
-
-  console.log("RECOMMENDATIONS:", data);
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to load recommendations"
-    );
-  }
-
-  return data;
+  return handleResponse(
+    response,
+    "Failed to load recommendations"
+  );
 };
