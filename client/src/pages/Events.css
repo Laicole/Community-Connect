@@ -1,0 +1,175 @@
+.events-page {
+  width: 100%;
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  padding:
+    42px
+    var(--page-padding)
+    100px;
+}
+
+/* HEADER */
+
+.events-header {
+  margin-bottom: 28px;
+}
+
+.events-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: var(--accent);
+
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.events-header h1 {
+  margin: 0;
+
+  color: var(--text-h);
+
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.events-header p {
+  margin-top: 10px;
+
+  color: var(--text);
+  font-size: 1rem;
+}
+
+/* CATEGORY FILTERS */
+
+.event-category-filters {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 28px;
+}
+
+.category-filter {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  padding: 10px 17px;
+
+  background: var(--surface);
+  color: var(--text);
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.category-filter:hover {
+  border-color: var(--accent);
+
+  background: #f8ecdc;
+  color: var(--accent);
+}
+
+.category-filter.active {
+  border-color: var(--accent);
+
+  background: var(--accent);
+  color: white;
+}
+
+/* RESULTS */
+
+.events-results-heading {
+  margin-bottom: 20px;
+  color: var(--text-h);
+}
+
+/* EMPTY STATE */
+
+.events-empty {
+  padding: 30px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  text-align: center;
+}
+
+/* EVENTS PAGE GRID ONLY */
+
+.explore-events-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 20px;
+
+  width: 100%;
+}
+
+/* Keep cards inside their columns */
+
+.explore-events-grid > * {
+  min-width: 0;
+}
+
+.explore-events-grid .event-card {
+  width: 100%;
+  min-width: 0;
+}
+
+/* TABLET - 2 COLUMNS */
+
+@media (max-width: 900px) {
+  .events-page {
+    padding-top: 32px;
+  }
+
+  .explore-events-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+  }
+}
+
+/* MOBILE - 1 COLUMN */
+
+@media (max-width: 600px) {
+  .events-page {
+    padding-top: 24px;
+    padding-bottom: 110px;
+  }
+
+  .event-category-filters {
+    flex-wrap: nowrap;
+
+    overflow-x: auto;
+
+    padding-bottom: 8px;
+  }
+
+  .category-filter {
+    flex: 0 0 auto;
+  }
+
+  .explore-events-grid {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+}

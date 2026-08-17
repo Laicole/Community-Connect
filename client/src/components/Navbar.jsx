@@ -14,7 +14,7 @@ function Navbar() {
     <>
       <header className="site-header">
         <div className="navbar-container">
-
+          {/* LOGO */}
           <Link to="/" className="brand">
             <img
               src="/community-connect-logo.png"
@@ -23,12 +23,25 @@ function Navbar() {
             />
           </Link>
 
+          {/* DESKTOP NAV */}
           <nav className="desktop-nav">
             <Link to="/">Home</Link>
-            <Link to="/">Events</Link>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/favorites">Favorites</Link>
-            <Link to="/profile">Profile</Link>
+
+            <Link to="/events">
+              Events
+            </Link>
+
+            <Link to="/dashboard">
+              Dashboard
+            </Link>
+
+            <Link to="/favorites">
+              Favorites
+            </Link>
+
+            <Link to="/profile">
+              Profile
+            </Link>
 
             {!token ? (
               <>
@@ -56,12 +69,25 @@ function Navbar() {
         </div>
       </header>
 
+      {/* MOBILE NAV */}
       <nav className="mobile-nav">
         <Link to="/">Home</Link>
-        <Link to="/">Events</Link>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/favorites">Favorites</Link>
-        <Link to="/profile">Profile</Link>
+
+        <Link to="/events">
+          Events
+        </Link>
+
+        <Link to="/dashboard">
+          Dashboard
+        </Link>
+
+        <Link to="/favorites">
+          Favorites
+        </Link>
+
+        <Link to="/profile">
+          Profile
+        </Link>
       </nav>
     </>
   );

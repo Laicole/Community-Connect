@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getEvents, getRecommendations } from "../services/api";
+import { Link } from "react-router-dom";
+import {
+  getEvents,
+  getRecommendations
+} from "../services/api";
 import EventCard from "../components/EventCard";
 import "./Home.css";
 
@@ -12,8 +16,12 @@ function Home() {
   const [ageGroup, setAgeGroup] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
+  const [freeOnly, setFreeOnly] = useState(false);
+  const [weekendOnly, setWeekendOnly] = useState(false);
 
-  const [message, setMessage] = useState("Loading events...");
+  const [message, setMessage] = useState(
+    "Loading events..."
+  );
 
   useEffect(() => {
     const loadHome = async () => {
@@ -23,14 +31,17 @@ function Home() {
         setEvents(eventData);
         setMessage("");
 
-        const token = localStorage.getItem("token");
+        const token =
+          localStorage.getItem("token");
 
         if (token) {
           try {
             const recommendationData =
               await getRecommendations();
 
-            setRecommendations(recommendationData);
+            setRecommendations(
+              recommendationData
+            );
           } catch (error) {
             console.error(
               "Could not load recommendations:",
@@ -46,52 +57,110 @@ function Home() {
     loadHome();
   }, []);
 
-  const filteredEvents = events.filter((event) => {
-    const searchText = search.toLowerCase();
+  const filteredEvents = events.filter(
+    (event) => {
+      const searchText =
+        search.trim().toLowerCase();
 
-    const matchesSearch =
-      event.title?.toLowerCase().includes(searchText) ||
-      event.description?.toLowerCase().includes(searchText);
+      const matchesSearch =
+        !searchText ||
+        event.title
+          ?.toLowerCase()
+          .includes(searchText) ||
+        event.description
+          ?.toLowerCase()
+          .includes(searchText);
 
-    const matchesCategory =
-      !category || event.category === category;
+      const matchesCategory =
+        !category ||
+        event.category === category;
 
-    const matchesAgeGroup =
-      !ageGroup || event.ageGroup === ageGroup;
+      const matchesAgeGroup =
+        !ageGroup ||
+        event.ageGroup === ageGroup;
 
-    const matchesLocation =
-      !location ||
-      event.location
-        ?.toLowerCase()
-        .includes(location.toLowerCase());
+      const matchesLocation =
+        !location ||
+        event.location
+          ?.toLowerCase()
+          .includes(
+            location.toLowerCase()
+          );
 
-    const eventDate =
-      event.date?.split("T")[0] || "";
+      const eventDate =
+        event.date?.split("T")[0] || "";
 
-    const matchesDate =
-      !date || eventDate === date;
+      const matchesDate =
+        !date ||
+        eventDate === date;
 
-    return (
-      matchesSearch &&
-      matchesCategory &&
-      matchesAgeGroup &&
-      matchesLocation &&
-      matchesDate
-    );
-  });
+      const matchesFree =
+        !freeOnly ||
+        Number(event.cost) === 0;
 
-  const featuredEvent = filteredEvents[0];
+      let matchesWeekend = true;
+
+      if (weekendOnly && event.date) {
+        const eventDay =
+          new Date(event.date).getDay();
+
+        matchesWeekend =
+          eventDay === 0 ||
+          eventDay === 6;
+      }
+
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesAgeGroup &&
+        matchesLocation &&
+        matchesDate &&
+        matchesFree &&
+        matchesWeekend
+      );
+    }
+  );
+
+  const featuredEvent =
+    filteredEvents[0];
+
+  const upNextEvents =
+    filteredEvents.slice(1, 4);
+
+  const clearSpecialFilters = () => {
+    setFreeOnly(false);
+    setWeekendOnly(false);
+  };
 
   const applyCategory = (value) => {
     setCategory(value);
+    clearSpecialFilters();
+  };
+
+  const showNearYou = () => {
+    setLocation("Monticello");
+    setFreeOnly(false);
+    setWeekendOnly(false);
+  };
+
+  const showWeekendEvents = () => {
+    setWeekendOnly(true);
+    setFreeOnly(false);
   };
 
   const showFreeEvents = () => {
+    setFreeOnly(true);
+    setWeekendOnly(false);
+  };
+
+  const showAllEvents = () => {
     setSearch("");
     setCategory("");
     setAgeGroup("");
     setLocation("");
     setDate("");
+    setFreeOnly(false);
+    setWeekendOnly(false);
   };
 
   return (
@@ -104,12 +173,14 @@ function Home() {
         </span>
 
         <h1>
-          Find something worth showing up for.
+          Find something worth
+          showing up for.
         </h1>
 
         <p>
-          Discover local events, activities, and
-          community experiences near you.
+          Discover local events,
+          activities, and community
+          experiences near you.
         </p>
 
         <div className="home-search">
@@ -141,12 +212,15 @@ function Home() {
         <div className="quick-filters">
           <button
             type="button"
-            onClick={() => setLocation("Monticello")}
+            onClick={showNearYou}
           >
             📍 Near You
           </button>
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={showWeekendEvents}
+          >
             📅 This Weekend
           </button>
 
@@ -169,7 +243,9 @@ function Home() {
           <button
             type="button"
             onClick={() =>
-              applyCategory("Arts & Culture")
+              applyCategory(
+                "Arts & Culture"
+              )
             }
           >
             🎨 Arts
@@ -178,7 +254,9 @@ function Home() {
           <button
             type="button"
             onClick={() =>
-              applyCategory("Health & Wellness")
+              applyCategory(
+                "Health & Wellness"
+              )
             }
           >
             🌿 Wellness
@@ -186,9 +264,7 @@ function Home() {
 
           <button
             type="button"
-            onClick={() =>
-              applyCategory("")
-            }
+            onClick={showAllEvents}
           >
             All Events
           </button>
@@ -201,7 +277,7 @@ function Home() {
         </p>
       )}
 
-      {/* FEATURED EVENT */}
+      {/* FEATURED + UP NEXT */}
 
       {featuredEvent && (
         <section className="home-section">
@@ -211,12 +287,83 @@ function Home() {
                 FEATURED
               </span>
 
-              <h2>Featured Event</h2>
+              <h2>
+                Featured Event
+              </h2>
             </div>
           </div>
 
-          <div className="featured-event">
-            <EventCard event={featuredEvent} />
+          <div className="home-featured-layout">
+            <div className="featured-event">
+              <EventCard
+                event={featuredEvent}
+              />
+            </div>
+
+            <aside className="up-next">
+              <span className="section-eyebrow">
+                COMING SOON
+              </span>
+
+              <h2>Up Next</h2>
+
+              <div className="up-next-list">
+                {upNextEvents.length ===
+                0 ? (
+                  <p>
+                    No additional events
+                    available.
+                  </p>
+                ) : (
+                  upNextEvents.map(
+                    (event) => (
+                      <Link
+                        key={event._id}
+                        to={`/events/${event._id}`}
+                        className="up-next-item"
+                      >
+                        <img
+                          src={
+                            event.image ||
+                            "/event-placeholder.jpg"
+                          }
+                          alt={
+                            event.title ||
+                            "Community event"
+                          }
+                          onError={(e) => {
+                            e.currentTarget.onerror =
+                              null;
+
+                            e.currentTarget.src =
+                              "/event-placeholder.jpg";
+                          }}
+                        />
+
+                        <div>
+                          <strong>
+                            {event.title}
+                          </strong>
+
+                          <span>
+                            {event.date
+                              ? new Date(
+                                  event.date
+                                ).toLocaleDateString()
+                              : "Date TBD"}
+                          </span>
+
+                          <span>
+                            {event.location ||
+                              "Location TBD"}
+                          </span>
+                        </div>
+                      </Link>
+                    )
+                  )
+                )}
+              </div>
+            </aside>
           </div>
         </section>
       )}
@@ -245,15 +392,20 @@ function Home() {
                 >
                   <div className="recommendation-label">
                     <strong>
-                      {event.matchScore}% match
+                      {event.matchScore}%
+                      match
                     </strong>
 
                     <span>
-                      {event.recommendationReason}
+                      {
+                        event.recommendationReason
+                      }
                     </span>
                   </div>
 
-                  <EventCard event={event} />
+                  <EventCard
+                    event={event}
+                  />
                 </div>
               ))}
           </div>
@@ -269,32 +421,43 @@ function Home() {
               EXPLORE
             </span>
 
-            <h2>Upcoming Events</h2>
+            <h2>
+              Upcoming Events
+            </h2>
           </div>
 
           <span className="event-count">
-            {filteredEvents.length} events
+            {filteredEvents.length}{" "}
+            events
           </span>
         </div>
 
-        {filteredEvents.length === 0 ? (
+        {filteredEvents.length ===
+        0 ? (
           <div className="home-empty">
-            <h3>No events found</h3>
+            <h3>
+              No events found
+            </h3>
 
             <p>
-              Try changing your search or filters.
+              Try changing your
+              search or filters.
             </p>
           </div>
         ) : (
           <div className="events-scroll">
-            {filteredEvents.map((event) => (
-              <div
-                className="event-slide"
-                key={event._id}
-              >
-                <EventCard event={event} />
-              </div>
-            ))}
+            {filteredEvents.map(
+              (event) => (
+                <div
+                  className="event-slide"
+                  key={event._id}
+                >
+                  <EventCard
+                    event={event}
+                  />
+                </div>
+              )
+            )}
           </div>
         )}
       </section>
